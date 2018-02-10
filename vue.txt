@@ -1,0 +1,1051 @@
+day01
+一、框架
+	软件框架是一套可被反复使用的优秀的代码，用来解决复杂的问题
+
+	好处：
+		①提高了开发速度
+		②提高了代码的复用率、
+		③提高了代码的质量 
+
+
+二、VueJS概述
+vuejs.org
+
+1、what
+	vue是一个 构建用户界面（ui） 渐进式的js的框架
+	（并不是所有的做UI的框架 都是由丰富的样式类库）
+	CLI: command line interface 终端用户界面
+	GUI: graphical user interface 图形化用户界面
+
+	vue = angular + React 
+
+2、where
+	饿了吗、滴滴、阿里巴巴
+	主要是用在数据操作比较频繁的 单页面应用程序中
+
+
+3、why	
+	①中文文档的支持
+	②容易上手 学习曲线比较缓和
+	③速度快
+	④体积小
+	⑤基于组件化的开发方式
+	⑥代码的可读性好、可维护性比较好
+	⑦极大的降低了耦合度(解耦：降低耦合度)
+
+4、how
+	方式1：引入对应的文件
+
+	方式2：基于命令行的开发方式
+		# 全局安装 vue-cli
+		 npm install --global vue-cli
+		# 创建一个基于 webpack 模板的新项目
+		 vue init webpack my-project
+		# 安装依赖，走你
+		 cd my-project
+		 npm install
+		 npm run dev
+
+三、Vue基本语法（双花括号+常用指令）
+
+		1、双花括号
+		interploation 插值表达式/mustache 胡子
+
+		语法：
+			<any> {{表达式}} </any>
+			将表达式执行的结果 输出到当前调用双花括号的元素 的innerHTML中
+
+
+			（10:32 - 10:42）
+			练习：创建一个demo03_lianxi.html
+			将一个对象数组（学生数组，学生是有sex/age/score,一共有3个学生）
+			展示在table中，thead有3列，分别是性别、年龄、成绩
+
+		2、循环指令
+
+			程序 ：
+				顺序结构、选择结构、循环结构
+
+			v-for用法：
+				<any v-for="临时变量 in 集合"></any>
+				<any v-for="(临时变量,下标) in 集合"></any>
+				目的就是①遍历集合 ②在遍历结合的同时，创建多个调用v-for的元素
+				举例：
+				<li v-for="myValue in list">{{myValue}}</li>
+
+
+		3、选择指令
+			file->new->edit file templates->左上角的加号-》修改name为vue，extension为html--》把模板内容粘贴-》ok
+
+			语法：
+				<any v-if="表达式"></any>
+				多重分支判断：
+					<p v-if=""></p>
+					<p v-else-if=""></p>
+					<p v-else></p>
+			作用：
+				根据表达式执行结果的真假，来决定是否要将当前的元素挂载到DOM
+
+			总结：3w1h\双花括号\v-for\v-if/v-else-if\v-else
+
+		4、事件绑定
+		 <any v-on:eventName="处理函数"> </any>
+		 给指定的标签 绑定上当eventName事件触发时，要执行的处理函数
+		 举例：
+		 <input type='text' v-on:change="handleChange"/>
+
+		 练习：（2:36 - 2:46）
+		 创建一个demo07_lianxi.html
+		 在视图中有一个列表，有一个按钮，当点击按钮时，向列表中插入一条100以内随机的数据；当列表长度大于10的时候，列表自动从DOM中移除。
+
+		 视图：无序列表、按钮
+		 功能：
+			①准备一个数组 [100,200,300],展示在列表中
+			②点击按钮，创建随机数，将随机数插入到数组中
+			③调用选择指令，当条件为：列表长度大于10，从DOM中移除
+
+		编程方式发生了变化，从DOM驱动 变成了 数据驱动型的。
+
+		5、属性绑定
+			基本用法：
+			<any v-bind:属性名称="表达式"></any>
+			作用：将表达式执行的结果的值 绑定给 属性
+			举例：
+				new Vue({
+					data:{
+						myUrl:'http://www.tmooc.com',
+						imgUrl:'img/1.jpg',
+						imgName:'1.jpg'
+					}
+				})
+				<a v-bind:href="myUrl"></a>
+				<img v-bind:src="imgUrl"/>
+				<img v-bind:src="'img/'+imgName"/>
+				
+				5.2 样式和样式类的绑定
+				<any v-bind:style="{fontSize:mySize}">
+				</any>
+
+				<any v-bind:class="{myRed:true}"></any>
+				
+
+		绑定：
+			①双向数据绑定
+				方向1：将数据绑定到视图中，当数据发生变化，视图会自动的更新
+				方式： {{}} v-if v-for 等常用指令
+
+				方向2：将表单元素中用户操作的结果 绑定到 某一个变量
+				方式： v-model
+
+			②事件绑定
+				v-on:click
+				@click
+			③属性绑定
+				v-bind:src
+				:src
+				:style
+				:class
+				:disabled
+
+		v-for/v-if/v-else-if/v-else/v-on/v-bind
+		v-html/v-show/v-bind
+
+
+		练习：
+			视图 两个input和一个按钮
+			功能：点击按钮，将input中输入的数字进行求和 并在控制台输出结果
+
+四、Vue中的组件
+	组件是一个可被反复使用的，带有特定功能的视图；
+	组件并不是vue的专利，Vue/Angular/React的组件都是以w3c中的WebComponent为标准创建的。
+	组件树的存在！！
+
+	4.1 组件如何进行封装？
+		
+		4.1.1 全局组件：
+		Vue.component('my-component',{
+			template:'<h1>hello</h1>'
+		});
+		
+		4.1.2 局部组件：
+		new Vue({
+    el: '#example',
+    data: {
+      msg: 'VueJS is Awesome'
+    },
+    components: {
+      'my-header': {
+        template:'<h1>it is a header</h1>'
+      }
+    }
+  })
+
+	4.2 调用组件
+
+		像使用普通的html标签一样，去调用组件类
+		<my-component></my-component>
+
+
+	4.3 注意事项
+		①全局组件并不是意味着可以用在任何一个位置，嵌套在任何一个组件
+		②局部组件只能直接用在el所指定的标签范围内，不能嵌套在其他组件
+		③组件在使用必须写开闭标签
+		<my-buttton></my-button>
+
+
+练习：
+	搞定分页功能
+
+	视图：
+		上一页 下一页 分页按钮构成的
+	功能：
+	①默认第一页高亮显示
+	②第一页选中，上一页不能点击
+	③最后一个选中，下一页不能点击
+	④选中某一页，当前页面高亮显示
+
+	v-bind v-for v-on {{}}
+
+	初始化：指定一个数组[1,2,3,4,5]
+	把数组遍历创建多个按钮
+	定义一个数据，保存当前选中的是第一页
+
+
+	Vue组件
+	Vue自定义指令
+	Vue自定义过滤器
+
+
+
+
+
+day02
+一、Vue组件
+1、组件
+	组件就是可被反复使用的，带有特定功能的视图
+
+	将需要经常的视图，比如登录窗口、页头、页脚封装成组件，然后方便复用，提高代码的可读性，降低了代码的维护成本，降低了耦合度
+
+	1.1 复合组件
+		复合组件就是一个组件，只不过复合组件可以有其它的组件构成
+
+		新建一个demo02_lianxi.html
+		练习：my-cart my-header my-footer my-list
+		my-header 渲染一个h1
+		my-footer 渲染一个p
+		my-list 渲染一个由3个元素构成的无序列表
+		最后放到my-cart中，将my-cart作为跟组件渲染出来。
+
+二、Vue中自定义指令
+
+	1、创建和使用
+		创建指令
+			Vue.directive('change',{
+				//调用指令会自定执行，并只调用一次
+				bind:function(el,binding){},
+				//当模板的数据发生变化，会自动执行
+				update:function(el,binding){},
+				//解除绑定会自定执行，并只调用一次
+				unbind:function(){}
+			})
+		使用指令：
+			v-change
+		
+		注意事项：
+			Vue中的指令的命名 烤串式命名方式，在调用指令时，要记得加上v-
+
+	2、自定义指令时，完成参数的传递和接收
+		在自定义指令时，指定指令的钩子函数（处理函数），经常用到的是bind/update/unbind
+
+		处理函数是有参数的，第一个参数是el，指的是调用指令的元素；第二参数是binding，是一个对象 ，包含一个value属性，记录的是传过来的参数
+
+		举例：
+			传递参数：
+			<h1 v-change="'#ff0000'"></h1>
+			接收参数：
+			el.style.backgroundColor = binding.value
+
+		练习：
+			demo04_lianxi.html
+		要求创建一个自定义的指令，任何调用该指令的元素背景色，都会变成通过参数，所传递的颜色
+
+		基本步骤：
+			1、完成指令的创建和使用
+			2、完成参数的发送和接收
+			3、将接受到的颜色 设置为 当前元素的背景色
+
+三、Vue中的过滤器
+
+	一个优秀的基于Vue的过滤器的项目：
+	https://github.com/wy-ei/vue-filter
+	
+	过滤器：可以将数据进行筛选、过滤、格式化的操作，把数据更好的呈现给用户
+
+	Vue中1.*版本 是支持内置的过滤器
+	Vue的2.*，自定义过滤器。
+
+	1、过滤器创建、使用
+
+	过滤器的本质就是一个带有参数、带有返回值的方法
+
+	创建：
+		//第一个参数用来指定过滤器的名字
+		//第二个参数指定过滤器要执行的操作，是一个方法，方法的参数是通过管道所传递来的数据
+		Vue.filter('过滤器名称',function(arg){
+			return arg处理后的结果
+		})
+
+	使用：
+		支持多重过滤
+		<any>
+		{{表达式 | 自定义过滤器(参数1，参数2) | 过滤器 }}
+		</any>
+
+	2、过滤器如何传参
+		①过滤器在创建时，让方法支持能够接受参数
+		Vue.filter(
+			'myCurrency',
+			function(arg,arg1,arg2，arg3){
+				return ‘处理后的结果’
+			}
+		)
+		②调用过滤器时发送参数
+		<any>{{表达式 | myCurrency(100,200,300)}}</any>
+
+
+	练习：demo06_lianxi.html
+	创建一个过滤器，将服务器端返回的
+	性别信息0 女/1男，
+	如果过滤器指定参数为en,返回boy\girl,
+	如果指定参数为zh,转换为男、女
+
+	0 | sex('en') --》girl
+	1 | sex('en') --》boy
+	0 | sex('zh') --》女
+	1 | sex('zh') --》男
+
+四、Vue中的组件生命周期处理函数
+	分为4个阶段：
+		create : 事件绑定、数据的初始化
+			beforeCreate
+			created
+		mount：元素挂载前后
+			beforeMount
+			mounted
+		update ：当数据发生变化
+			beforeUpdate
+			updated
+		destroy：收尾工作
+			beforeDestroy
+			destroyed
+
+	练习：demo08_lianxi.html
+		创建一个组件，在组件中渲染一个h1。
+		在组件挂载完毕之后，希望启动一个定时器来实现h1标签的透明度的渐变效果
+		0~1 0~1 ...
+
+		①创建和调用组件 
+		②mounted
+		③ h1 style opacity 
+		
+	Vue.component('my-com',{
+		生命周期的处理函数:function(){},
+		data:function(){return {}},
+		methods:{handleClick:function(){}},
+		template:`<h1></h1>`
+	});
+
+
+五、常见属性
+	1、watch 监听属性
+		①先给要监听的变量 初始化
+			Vue.component('test',{
+				data:function(){
+					return {uName:''}
+				}
+			})
+		②表单元素在双向数据绑定，绑定到该变量
+			<select v-model="uName"></select>
+		③添加监听属性
+			Vue.component('test',{
+				data:function(){
+					return {uName:'',uAgree:false}
+				}，
+				template:`
+						<form>
+							<select v-model="uName"></select>
+							<input type="checkbox" v-model="uAgree"/>
+						</form>
+				`,
+				watch:{
+					uName:function(newValue,oldValue){},
+					uAgree:function(newValue,oldValue){}
+				}
+			})
+	2、computed 计算属性
+		计算属性和methods中定义的方法，执行的结果确实是一样的，但是计算属性是根据依赖进行缓存的。
+
+		在Vue的代码编写过程中，设计到复杂的业务逻辑 建议放在计算属性computed，而不是放在methods
+		//创建计算属性
+		new Vue({
+			computed:{
+				myComputed:function(){
+					return 变量
+				}
+			}
+		})
+		//使用计算属性
+		<p>{{myComputed}}</p>
+
+
+每日一练：
+	
+
+
+
+day03
+安排：
+	Vue中组件之间的通信的方式
+	Vue中路由模块的使用
+
+掌握的重点：
+	组件间通信+路由模块+网络请求模块
+
+一、组件间通信
+	
+	1、父组件 与 子组件 通信 (props down)
+		①传值
+			<son uname=“zhangsan”></son>
+		②接受
+			Vue.component('son',{
+				props:['uname','tips'],
+				template:'<div>
+						<p>{{uname}}</p>
+						<input type='text' :placeholder="tips"/>
+					</div>
+					'
+			})
+		练习：demo02_lianxi.html
+		
+		三个组件：
+		 my-input
+		 my-button
+		 my-login
+
+	
+	2、子组件 与 父组件 通信 (events up)
+		确认：子组件 把数据 发给父组件
+		①绑定事件
+			1.1
+				在父组件中 定义一个方法，用来给子组件指定事件的处理函数
+				rcvMsg:function(msg){
+					//msg就是通过事件所传递来的值
+				}
+			1.2
+				在父组件中调用子组件时，绑定事件
+				<son @customEvent="rcvMsg"></son>
+		②触发事件
+			子组件的内部 去触发事件
+			this.$emit('customEvent',123)
+
+		综合练习：
+			my-user:用户名 输入框 按钮
+			my-chatroom：无序列表+ my-user +my-user
+
+	3、ref 可以让父组件主动的到子组件中取值
+		①指定引用的名称
+			<son ref="mySon"></son>
+		②根据引用的名称找到组件的实例(对象)
+			this.$refs.mySon
+		注意事项：不要试图通过ref属性去传值，ref在使用的过程中是一个关键词，旨在指定一个引用的名称
+
+	4、$parent
+		子组件可以通过this.$parent得到父组件的实例对象
+
+		总结：在父子相互通信的过程的
+		父-》子
+			props down
+			this.$parent
+		子-》父
+			events up 
+			this.$refs.mySon
+
+	5、兄弟组件之间的通信
+			var bus = new Vue();
+			bus.$on('eventName',function(msg){});
+			bus.$emit('eventName',数据)
+
+			练习：
+			在当前案例的基础上，给熊二组件添加一个按钮，点击按钮，告诉熊大：‘怕啥！’
+
+			熊二（发送 触发事件） -》 熊大（接收 绑定）
+
+二、扩展
+	为了让Vue组件化的开发方式 更容易维护和开发，有多种方式来创建组件
+	①全局组件
+		Vue.component('test',{
+			template:`<h1></h1>`
+		})
+	②局部组件
+		new Vue({
+			components:{
+				my-component:{
+					template:''
+				}
+			}
+		})
+	③通过模板指定
+	 <script type='text/x-template' id="myContent">
+	 
+	 </script>
+	
+		Vue.component('my-component',{
+			template:'#myContent'
+		})
+	④单文件组件
+		以.vue结尾的文件
+		一个vue结尾的文件就是一个组件，而这个文件中是通过template去指定模板内容，通过script去指定业务逻辑，通过style指定样式
+
+
+三、综合练习
+	todobox
+	①完成组件的创建和使用
+	②add
+		功能1：
+		在todoinput中的按钮单击时，将输入框中的内容 传递给todolist（兄弟组件通信）；
+		功能2：
+		todolist将接受到数据 传递给 todoitem（父与子通信）		
+		步骤1：todoinput
+			输入框 v-model
+			按钮 bus.$emit
+		步骤2：todolist
+			bus.$on
+			定义一个数组 保存通过事件所传递来的数据
+			v-for
+		步骤3：
+			通过属性传值todoitem
+	
+	③delete
+		
+
+
+删除功能：
+①todolist在调用todoitem时候，通过content和myIndex将内容和下标传递给了todoitem
+②在调用todoitem时 绑定一个事件处理函数
+在事件处理函数中，去接收传递来的下标，并从数组中删除指定下标的元素
+③在todoitem中 点击delete按钮时，触发自定义事件
+并将当前是第一个(this.myIndex)传递给todolist
+
+day04
+一、Vue中路由的使用
+
+单页面应用程序(single page application):在一个完整的工程，可以只有一个完整的页面，其余的都是代码片段。
+
+
+SPA的基本工作原理：
+	①加载完整的页面
+	②解析地址栏中的页面地址和路由地址
+	③根据配置好的路由词典，找到该路由地址所对应的要加载的真实的页面
+	④发起ajax请求，将真实的页面从服务器加载过来
+	⑤将页面加载到指定的容器中
+
+
+1、路由的基本用法
+任何一个框架的路由模块：建立起url和页面之间的映射关系
+
+实现一个SPA基本思路：
+	①指定一个容器
+		<router-view></router-view>
+	②创建代码片段
+		创建组件
+		var Login = Vue.component('login-component',{
+			template:`<h1>登录页面</h1>`
+		})
+	③配置路由词典
+		new Vue({
+			router:new VueRouter({
+				routes:[
+					{path:'/myLogin',component:Login}
+				]
+			})
+		})
+	④测试
+	测试路由词典中 路由地址能否按照需求 正确加载所需要用到的页面
+
+
+2、页面跳转的方式
+	①可以直接修改地址栏（内部测试）
+	②可以通过js
+	 this.$router.push('目的地的路由地址')
+	③routerLink
+	 <router-link to="目的地的路由地址"></router-link>
+
+
+练习：demo02_lianxi.html
+	login  在登录页面 放上一个routerLink 跳转到Main页面
+	main  在main页面中，放上一个按钮（退出登录），点击跳转到login
+
+
+3、跳转的同时如何进行传参
+
+扩充：路由匹配规则
+	①将路由地址为空的放在路由词典的最上边
+		{path:'',component:Login}
+	②具体的路由地址 对应 具体的组件
+		{path:'/login',component:Login}
+	③异常处理，如果当前页面中的路由地址 在路由词典中没有匹配到，作为异常处理
+		{path：'*'....}
+
+参数的传递：
+	①发送
+		http://****.com/#/main/zhangsan
+		this.$router.push('/main/zhangsan')
+	②接收
+		配置接收方自身的路由地址
+		const myRoutes = [
+			{path:'/main/:uname',component:Main}
+		]
+		this.$route.params.uname
+
+	综合练习:demo04.html（15:10 - 15:30）
+		通过Vue和VueRouter来实现一个SPA，这个SPA中有3个页面：
+		Check 商品的查看页面 btn 点击跳转pay（同时将价格 100发送）
+		Pay   商品的支付页面 接收参数 显示在h1 ，routerLink点击时 跳转到send
+		Send  商品的发货页面 btn 点击跳转到Check
+
+		①SPA
+		②跳转
+		③传参
+
+			
+4、嵌套路由
+ 嵌套路由 在一个SPA中的某一个路由地址所对应的组件中，还可以接着再嵌套其它的组件。
+
+	步骤1：先到准备嵌套组件的组件中 指定一个容器
+	步骤2：给组件在配置路由词典，指定一个children
+
+	举例：
+	假设A组件 需要嵌套B组件、C组件
+	①给A组件的模板 指定一个router-view
+	② {
+			path:'',
+			component:A,
+			children:[
+				{path:'/b',component:B}
+			]
+		}
+
+
+扩充：
+	如果想要实现页面的前进或者后退？
+
+		this.$router.go(-1);
+
+
+
+Vue的基础知识（指令、过滤器、组件）
+Vue中组件间通信
+Vue中创建SPA（基本步骤、跳转、传参、嵌套）
+Vue中与服务器端通信的方式
+
+5、与服务器端通信
+
+5.1 具体方式
+	①引入vue-resource.js
+	②发请求
+		this.$http
+			.get('url')
+			.then((response)=>{
+				//response.data
+			})
+	
+5.2 fake online api
+	jsonplaceholder.typicode.com/users
+ 
+
+6、搭建.vue结尾的文件运行的一个环境
+	①tpls.zip
+	②将压缩包考到指定的目录
+	C:\xampp\htdocs\13_FRAMEWORK\vue\project
+	③解压缩到当前文件夹
+	④进入到tpls文件夹
+	⑤安装依赖
+		shift+右键--》打开终端
+	 npm install
+	⑥启动环境
+		npm start
+
+
+每日一练：
+	路由嵌套
+	创建两个组件，购物车，订单确认
+	在订单确认的组件中 能够嵌套首次确认、再次确认组件
+
+	①引入vue-router.js
+	②指定router-view
+	③创建Cart OrderConfirm
+	④配置路由词典
+	⑤找到OrderConfirm 指定容器 router-view
+	⑥创建要用到的组件 firstConfirm\secondConfirm
+	⑦配置上述两个组件的路由地址
+
+
+
+day05
+include 包含 引入
+exclude 从当中移除
+
+npm node package manager 包管理器
+
+举例：
+	brew/apt-get/...
+	brew install ***
+
+0、创建组件类的方式
+	①  全局组件
+	Vue.component('',{
+		template:'<h1></h1>'
+	})
+	② 局部组件
+	new Vue({
+			components:{
+				my-header:{
+					template:''
+				}
+			}
+	})
+	③ 指定模板内容
+	<script type='text/x-template' id='myTPL'>
+		 <h1> it is a header</h1>
+	</script>
+
+	Vue.component('',{
+	 template:'#myTPL'
+	})
+
+	④.vue结尾的文件 ---》 单文件组件
+	.vue结尾的文件 不能直接被浏览器识别
+
+1、npm start之后启动了页面，显示内容？？
+
+	①找package.json,
+		执行scripts中的node build/dev-server.js
+	②加载index.html
+	③加载main.js，
+		指定模板是App.Vue导出的组件类
+		指定一个路由词典(router/index.js去配置)，而路由词典是默认要加载Hello.vue
+	④而在App.vue中是有一个router-view
+
+2、 模板项目的目录介绍
+	①build 包含webpack、开发服务器等相关的设置
+	②config 针对项目做些配置
+	③node_modules 根据package.json中的dependencies和 devDependencies安装所有的依赖
+	④src 
+		assets 存储资源文件 css、js
+		components 放组件
+		router index.js 配置路由词典
+		App.vue 根组件 (router-view)
+		main.js 创建一个Vue的示例，同时指定路由模块、要加载的页面
+	⑤package.json
+		记录工程信息，比如工程名称、依赖。。。
+
+3、demo list detail
+	①创建两个组件
+	②配置路由词典
+	③测试
+	④实现跳转
+	⑤实现传参
+		list --index--> detail
+		接收 （配置接收方的路由地址）
+		发送
+
+	在spa中 有一个组件 MyHeader.vue 渲染一个h1标签；希望在List组件中 能够调用MyHeader.vue
+
+4、单文件组件如何形成复合组件？
+	方式1：作为全局组件去调用
+		①创建.vue结尾的组件
+			MyHeader.vue
+		②到router/index.js中，通过Vue.component 真正的全局组件
+			import MyHeader from '@/components/MyHeader',
+			Vue.component('my-header',MyHeader)
+
+		③作为标签去调用组件
+				<my-header></my-header>
+  方式2：作为局部组件去调用
+		①创建组件
+			MyFooter.vue
+		②在需要调用该组件的地方，创建成一个局部组件
+			List.vue
+
+			import MyFooter from '@/components/MyFooter'
+
+			export default{
+				components:{
+					myfooter:MyFooter
+				}
+			}
+		③调用组件
+		 <myfooter></myfooter>
+
+	练习：（14:40 - 14:55）
+	在src/components创建
+	ToDoBox.vue
+	ToDoList.vue
+	ToDoInput.vue
+	ToDoItem.vue
+
+	实现静态页面
+
+5、如何在Vue的项目中使用第三方的样式类文件？
+	①在src/assets,先去创建一个css的文件夹
+	②将需要用到的样式类文件拷贝到css文件夹中
+	③在main.js,直接引入
+	import './assets/css/bootstrap.css'
+
+
+
+项目安排：
+
+目标：使用Vue来实现学子商城的后台管理界面
+架构: SPA 
+	login登录
+	main 主页面 ，能够嵌套charts组件、productList组件、userList组件
+要求：
+	①默认加载login
+	②进入到main页面，默认加载charts组件
+步骤:(16:40 - 17:10)
+	1、创建要用到的各个组件
+	2、配置路由词典
+	3、具体实现login
+			①在assets目录下 去创建js/css/fonts文件夹，引入对应的资源文件
+			 （js文件只需要引入jquery jquery-flot）
+			②在main.js 
+			import方式引入到工程，比如
+			import './assets/css/bootstrap.css'
+			③找到admin/login.html
+			将需要用到的模板内容 拷贝Login.vue的template
+			④实现登录功能（需要与服务器端通信）
+	4、具体实现charts
+	...
+
+
+	跨域：
+	 init.php
+		header('Access-Controll-Allow-Origin:*');
+
+
+
+day06
+
+include 包含 引入
+exclude 从当中移除
+
+npm node package manager 包管理器
+
+举例：
+	brew/apt-get/...
+	brew install ***
+
+0、创建组件类的方式
+	①  全局组件
+	Vue.component('',{
+		template:'<h1></h1>'
+	})
+	② 局部组件
+	new Vue({
+			components:{
+				my-header:{
+					template:''
+				}
+			}
+	})
+	③ 指定模板内容
+	<script type='text/x-template' id='myTPL'>
+		 <h1> it is a header</h1>
+	</script>
+
+	Vue.component('',{
+	 template:'#myTPL'
+	})
+
+	④.vue结尾的文件 ---》 单文件组件
+	.vue结尾的文件 不能直接被浏览器识别
+
+1、npm start之后启动了页面，显示内容？？
+
+	①找package.json,
+		执行scripts中的node build/dev-server.js
+	②加载index.html
+	③加载main.js，
+		指定模板是App.Vue导出的组件类
+		指定一个路由词典(router/index.js去配置)，而路由词典是默认要加载Hello.vue
+	④而在App.vue中是有一个router-view
+
+2、 模板项目的目录介绍
+	①build 包含webpack、开发服务器等相关的设置
+	②config 针对项目做些配置
+	③node_modules 根据package.json中的dependencies和 devDependencies安装所有的依赖
+	④src 
+		assets 存储资源文件 css、js
+		components 放组件
+		router index.js 配置路由词典
+		App.vue 根组件 (router-view)
+		main.js 创建一个Vue的示例，同时指定路由模块、要加载的页面
+	⑤package.json
+		记录工程信息，比如工程名称、依赖。。。
+
+3、demo list detail
+	①创建两个组件
+	②配置路由词典
+	③测试
+	④实现跳转
+	⑤实现传参
+		list --index--> detail
+		接收 （配置接收方的路由地址）
+		发送
+
+	在spa中 有一个组件 MyHeader.vue 渲染一个h1标签；希望在List组件中 能够调用MyHeader.vue
+
+4、单文件组件如何形成复合组件？
+	方式1：作为全局组件去调用
+		①创建.vue结尾的组件
+			MyHeader.vue
+		②到router/index.js中，通过Vue.component 真正的全局组件
+			import MyHeader from '@/components/MyHeader',
+			Vue.component('my-header',MyHeader)
+
+		③作为标签去调用组件
+				<my-header></my-header>
+  方式2：作为局部组件去调用
+		①创建组件
+			MyFooter.vue
+		②在需要调用该组件的地方，创建成一个局部组件
+			List.vue
+
+			import MyFooter from '@/components/MyFooter'
+
+			export default{
+				components:{
+					myfooter:MyFooter
+				}
+			}
+		③调用组件
+		 <myfooter></myfooter>
+
+	练习：（14:40 - 14:55）
+	在src/components创建
+	ToDoBox.vue
+	ToDoList.vue
+	ToDoInput.vue
+	ToDoItem.vue
+
+	实现静态页面
+
+5、如何在Vue的项目中使用第三方的样式类文件？
+	①在src/assets,先去创建一个css的文件夹
+	②将需要用到的样式类文件拷贝到css文件夹中
+	③在main.js,直接引入
+	import './assets/css/bootstrap.css'
+
+
+
+项目安排：
+
+目标：使用Vue来实现学子商城的后台管理界面
+架构: SPA 
+	login登录
+	main 主页面 ，能够嵌套charts组件、productList组件、userList组件
+要求：
+	①默认加载login
+	②进入到main页面，默认加载charts组件
+步骤:(16:40 - 17:10)
+	1、创建要用到的各个组件
+	2、配置路由词典
+	3、具体实现login
+			①在assets目录下 去创建js/css/fonts文件夹，引入对应的资源文件
+			 （js文件只需要引入jquery jquery-flot）
+			②在main.js 
+			import方式引入到工程，比如
+			import './assets/css/bootstrap.css'
+			③找到admin/login.html
+			将需要用到的模板内容 拷贝Login.vue的template
+			④实现登录功能（需要与服务器端通信）
+	4、具体实现charts
+	...
+
+
+	跨域：
+	 init.php
+		header('Access-Controll-Allow-Origin:*');
+
+
+	涉及到网络情况：
+		①请求的接口是否正确
+		②接口需要的参数个数和类型传的 是否正确
+		③浏览器 f12 network headers和response
+		④后台接口
+
+  任务1：
+		实现Main.vue
+		
+		admin/index.html 学子商城后台管理主页面
+		在index.html中，内容大致分为3大块
+		分别是:顶部导航条、正文、页脚
+
+		①拷贝模板内容到main.vue的template
+		②给图片指定路径 ../assets/
+		③给template的div加上class="nav-md"
+		④main组件默认要允许嵌套组件 有容器
+		router-view
+
+		处理相关的操作：（11:05 - 11:35）
+			①到Main.vue中 定义变量
+			②在mounted之后 ，对变量赋值
+			③将setContentHeight方法 重构以下
+			（$BODY-->this.$BODY）
+			④在mounted之后，a绑定click
+
+
+
+	任务2：
+		实现Charts.vue
+
+			①需要一个用来创建随机数据的方法
+			②需要指定折线图绘制在哪个地方
+			  var plot = $.plot("#placeholder", [getRandomData()], {
+        series: {
+          shadowSize: 0	// Drawing is faster without shadows
+        },
+        yaxis: {
+          min: 0,
+          max: 100
+        },
+        xaxis: {
+          show: false
+        }
+      });
+			③启动一个周期性定时器
+				 plot.setData([getRandomData()]);
+        plot.draw();
+
+	任务3：完成商品列表(15:45 - 16:10)
+		①在组件创建之后，向服务器获取数据
+		同时渲染出来
+			在Vue的单文件系统中，如果想要动态的拼接图片路径：
+			 <img :src="require('../assets/'+product.pic)"/>
+
+		②支持选择每页加载多少条数据
+			data/product_list.php
+				pno
+				pageSize
+		③分页功能(每日一练)		
+			1、一个整数n，创建一个有n个元素的数组
+			2、 v-for
+			3、动态样式
+			4、搞定上一页、下一页（v-if）
+
+
+
+
+
+
